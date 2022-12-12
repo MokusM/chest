@@ -25,7 +25,7 @@
 			</li>
 			<li class="purchase-list__item">
 				<div class="text-item">Сумма:</div>
-				<div class="text-value">{{ price }}<span>$</span></div>
+				<div class="text-value">{{ price }}<span class="text-item">$</span></div>
 			</li>
 		</ul>
 		<button @click="buyGame">Купить</button>
@@ -51,6 +51,7 @@ export default {
 		buyGame() {
 			this.availableGame += this.game;
 			this.game = 0;
+			this.$emit('available', this.availableGame);
 		},
 	},
 

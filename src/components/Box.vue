@@ -25,6 +25,7 @@ export default {
 	align-items: flex-end;
 	justify-content: center;
 	padding-bottom: 11px;
+	cursor: pointer;
 }
 .chest {
 	width: 125px;

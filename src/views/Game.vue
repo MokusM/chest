@@ -11,7 +11,11 @@
 					</div>
 					<div class="inf">Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"</div>
 				</div>
-				<Purchase />
+				<div class="center">
+					{{ availableGame }}
+					<button :disabled="availableGame === 0" @click="playGame">ИГРАТЬ</button>
+				</div>
+				<Purchase @available="game" />
 			</div>
 		</div>
 	</div>
@@ -30,8 +34,17 @@ export default {
 	},
 	data() {
 		return {
-			game: 0,
+			availableGame: 0,
 		};
+	},
+	methods: {
+		game(count) {
+			this.availableGame = count;
+		},
+
+		playGame() {
+			this.availableGame--;
+		},
 	},
 };
 </script>
@@ -48,7 +61,7 @@ export default {
 .inf {
 	text-align: center;
 	color: #fff;
-	font-family: 'PT';
+	font-family: 'PT Sans';
 }
 
 .box-list {

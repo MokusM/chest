@@ -1,15 +1,16 @@
-// @font-face {
-// 	font-family: 'a_BremenCaps';
-// 	src: url('~/src/assets/fonts/ABremenCaps.woff') format('woff2'), url('src/assets/fonts/ABremenCaps.woff') format('woff');
-// 	font-weight: normal;
-// 	font-style: normal;
-// 	font-display: swap;
-// }
+$bremen: '~@/assets/fonts/';
+@font-face {
+	font-family: 'a_BremenCaps';
+	src: url('#{$bremen}/ABremenCaps.woff') format('woff2'), url('#{$bremen}/ABremenCaps.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
 
-// @font-face {
-// 	font-family: 'PT Sans';
-// 	src: url('src/assets/fonts/PTSans-Regular.woff2') format('woff2'), url('src/assets/fonts/PTSans-Regular.woff') format('woff');
-// 	font-weight: normal;
-// 	font-style: normal;
-// 	font-display: swap;
-// }
+@font-face {
+	font-family: 'PT Sans';
+	src: url('#{$bremen}/PTSans-Regular.woff2') format('woff2'), url('#{$bremen}/PTSans-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
