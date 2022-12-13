@@ -10,14 +10,15 @@
 				<div class="content__chest">
 					<div class="box-list">
 						<div class="box-list__item" :class="{ disabled: isAllow }" v-for="(item, index) in chestLenght" :key="`item+${index}`" @click="openChest(index)">
-							<box :win="isWin" :count="countImg" />
+							{{ currentChest === index }}
+							<box :win="isWin" :animation="currentChest === index" />
 						</div>
 					</div>
 					<div class="inf">Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"</div>
 				</div>
 				<div class="content__trol">
 					<prompt :text-index="promptText" />
-					<button :disabled="isAllow" @click="openChest" class="btn">ИГРАТЬ</button>
+					<button :disabled="isAllow" @click="openChest()" class="btn">ИГРАТЬ</button>
 				</div>
 				<div class="content__purchase">
 					<purchase :availableGame.sync="game" />
@@ -51,12 +52,17 @@ export default {
 			showModal: false,
 			isLoading: false,
 			chestLenght: 9,
-			countImg: 0,
+			currentChest: -1,
 		};
 	},
 	methods: {
-		openChest(index = null) {
-			if (index) Math.floor(Math.random() * this.chestLenght) + 1;
+		openChest(index) {
+			if (index) {
+				this.currentChest = index;
+			} else {
+				this.currentChest = Math.floor(Math.random() * this.chestLenght) + 1;
+				console.log(';fff');
+			}
 
 			this.game--;
 			this.isLoading = true;
@@ -68,18 +74,11 @@ export default {
 					this.showModal = false;
 				}, 3000);
 			}, 1100);
-
-			this.countImg = 0;
-			let timerId = setInterval(() => {
-				this.countImg++;
-				if (this.countImg >= 4) {
-					clearInterval(timerId);
-				}
-			}, 150);
 		},
 
 		closeModal() {
 			this.showModal = false;
+			this.isLoading = false;
 		},
 	},
 	computed: {

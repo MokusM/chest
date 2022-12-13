@@ -1,6 +1,6 @@
 <template>
 	<div class="box">
-		<img :src="require(`@img/chest-${status}-${count}.png`)" alt="" />
+		<img :src="require(`@img/chest-${status}-${countImg}.png`)" alt="" />
 	</div>
 </template>
 
@@ -12,14 +12,30 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		count: {
-			type: Number,
-			default: 0,
+		animation: {
+			type: Boolean,
+			default: false,
 		},
+	},
+	data() {
+		return {
+			countImg: 0,
+		};
 	},
 	computed: {
 		status() {
 			return this.win ? 'win' : 'loss';
+		},
+	},
+	watch: {
+		animation() {
+			this.countImg = 0;
+			let timerId = setInterval(() => {
+				this.countImg++;
+				if (this.countImg >= 4) {
+					clearInterval(timerId);
+				}
+			}, 150);
 		},
 	},
 };
@@ -39,9 +55,9 @@ export default {
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
-		bottom: 2px;
-		width: 87%;
-		height: 87%;
+		bottom: 6px;
+		width: 83%;
+		height: 83%;
 	}
 }
 </style>
