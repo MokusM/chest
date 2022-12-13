@@ -1,6 +1,5 @@
 <template>
 	<div class="purchase">
-		<img src="../assets/img/purchase-title.png" alt="" />
 		<div class="text-item">1 игра = 5 $</div>
 		<div class="title">Вам доступно</div>
 		<ul class="purchase-list">
@@ -68,7 +67,7 @@ export default {
 	background-image: url(@img/purchase-bg.png);
 	background-repeat: no-repeat;
 	background-size: contain;
-	padding: 20px;
+	padding: 80px 20px;
 }
 .text-item {
 	color: #bab6b6;
