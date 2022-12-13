@@ -4,39 +4,57 @@
 		<div class="title">Вам доступно</div>
 		<ul class="purchase-list">
 			<li class="purchase-list__item">
-				<div class="text-item">1 игра = 5 $</div>
-				<div class="text-value">{{ availableGame }}</div>
+				<div class="text-item">Игр:</div>
+				<div class="purchase-list__cell">
+					<div class="text-value">{{ availableGame }}</div>
+				</div>
 			</li>
-		</ul>
-		<div class="title">Покупка:</div>
-		<ul class="purchase-list">
+			<li class="purchase-list__item purchase-list__item_title">
+				<div class="title">Покупка:</div>
+				<div></div>
+			</li>
 			<li class="purchase-list__item">
 				<div class="text-item">Игр:</div>
-				<div class="text-value">{{ game }}</div>
-				<div class="slider">
-					<div class="slider__item slider__item_up" @click="moreGame">
-						<img src="@img/arrow.svg" alt="" />
-					</div>
-					<div class="slider__item slider__item_bottom" :class="{ disabled: game === 0 }" @click="lessGame">
-						<img src="@img/arrow.svg" alt="" />
+				<div class="purchase-list__cell">
+					<div class="purchase-list__row">
+						<div class="text-value">{{ game }}</div>
+						<div class="counter">
+							<button class="counter__btn" @click="moreGame">
+								<img src="@img/arrow.svg" alt="" />
+							</button>
+							<button class="counter__btn" :class="{ disabled: game === 0 }" @click="lessGame">
+								<img src="@img/arrow.svg" alt="" />
+							</button>
+						</div>
 					</div>
 				</div>
 			</li>
 			<li class="purchase-list__item">
 				<div class="text-item">Сумма:</div>
-				<div class="text-value">{{ price }}<span class="text-item">$</span></div>
+				<div class="purchase-list__cell">
+					<div class="purchase-list__row">
+						<div class="text-value">{{ price }}</div>
+						<span class="text-item">$</span>
+					</div>
+				</div>
 			</li>
 		</ul>
-		<button @click="buyGame">Купить</button>
+		<button @click="buyGame" :disabled="game === 0" class="btn">Купить</button>
 	</div>
 </template>
 <script>
 export default {
 	name: 'Purchase',
+	props: {
+		availableGame: {
+			type: Number,
+			default: 0,
+		},
+	},
 	data() {
 		return {
+			purchaseGame: this.availableGame,
 			game: 0,
-			availableGame: 0,
 		};
 	},
 
@@ -48,9 +66,9 @@ export default {
 			this.game--;
 		},
 		buyGame() {
-			this.availableGame += this.game;
+			this.purchaseGame += this.game;
 			this.game = 0;
-			this.$emit('available', this.availableGame);
+			this.$emit('update:availableGame', this.purchaseGame);
 		},
 	},
 
@@ -63,11 +81,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .purchase {
-	width: 282px;
+	height: 508px;
 	background-image: url(@img/purchase-bg.png);
 	background-repeat: no-repeat;
-	background-size: contain;
-	padding: 80px 20px;
+	background-size: 100% 100%;
+	padding: 111px 20px 10px;
 }
 .text-item {
 	color: #bab6b6;
@@ -81,32 +99,70 @@ export default {
 	line-height: 31px;
 	font-weight: 400;
 	text-transform: uppercase;
+	text-shadow: -4px 6px 3px rgba(31, 32, 32, 0.4);
+	margin-top: 27px;
 }
 .text-value {
 	color: #fec602;
 	font-size: 30px;
 	line-height: 31px;
 	font-weight: 400;
+	text-shadow: -4px 6px 3px rgba(31, 32, 32, 0.4);
 }
 
 .purchase-list {
+	display: table;
+	width: 100%;
+	margin-bottom: 12px;
+
 	&__item {
+		display: table-row;
+
+		& > div {
+			display: table-cell;
+		}
+
+		.title {
+			padding-top: 46px;
+		}
+	}
+
+	&__cell {
+		width: 20%;
+	}
+
+	&__row {
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
+
+		.text-value {
+			margin-right: 5px;
+		}
+
+		.text-item {
+			font-size: 24px;
+		}
 	}
 }
 
-.slider {
-	&__item {
+.counter {
+	&__btn {
 		padding: 2px;
+		display: block;
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
+		&:hover {
+			fill: #fec602;
+		}
 
 		&.disabled {
 			opacity: 0.5;
 			pointer-events: none;
 		}
 
-		&_bottom {
-			padding: 2px;
+		&:last-child {
 			img {
 				transform: scale(1, -1);
 			}

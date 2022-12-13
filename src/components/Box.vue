@@ -1,5 +1,5 @@
 <template>
-	<div class="box">
+	<div class="box" :class="{ disabled: this.purchaseGame === 0 }">
 		<div class="chest">
 			<div class="chest__top"></div>
 			<div class="chest__bottom"></div>
@@ -11,7 +11,22 @@
 export default {
 	name: 'Box',
 	props: {
-		msg: String,
+		availableGame: {
+			type: Number,
+			default: 0,
+		},
+	},
+	data() {
+		return {
+			purchaseGame: this.availableGame,
+		};
+	},
+
+	methods: {
+		openBox() {
+			this.purchaseGame -= 1;
+			this.$emit('update:availableGame', this.purchaseGame);
+		},
 	},
 };
 </script>
@@ -25,7 +40,15 @@ export default {
 	align-items: flex-end;
 	justify-content: center;
 	padding-bottom: 11px;
-	cursor: pointer;
+
+	&:not(.disabled) {
+		cursor: pointer;
+	}
+
+	&.active {
+		background: red;
+		border: 2px solid red;
+	}
 }
 .chest {
 	width: 125px;

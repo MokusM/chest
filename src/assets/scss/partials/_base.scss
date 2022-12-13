@@ -1,3 +1,37 @@
 body {
 	font-family: 'a_BremenCaps';
 }
+
+.btn {
+	width: 240px;
+	height: 75px;
+	display: block;
+	background-color: transparent;
+	background-image: url(@img/btn-buy.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	color: #52311b;
+	font-size: 36px;
+	font-weight: 400;
+	line-height: 40px;
+	text-align: center;
+	text-transform: uppercase;
+
+	&:disabled {
+		color: #52311b;
+		background-image: url(@img/btn-play.png);
+		pointer-events: none;
+	}
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.2s linear;
+}
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
