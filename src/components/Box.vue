@@ -1,9 +1,6 @@
 <template>
-	<div class="box" :class="{ disabled: this.purchaseGame === 0 }">
-		<div class="chest">
-			<div class="chest__top"></div>
-			<div class="chest__bottom"></div>
-		</div>
+	<div class="box">
+		<img :src="require(`@img/chest-${status}-${count}.png`)" alt="" />
 	</div>
 </template>
 
@@ -11,21 +8,18 @@
 export default {
 	name: 'Box',
 	props: {
-		availableGame: {
+		win: {
+			type: Boolean,
+			default: false,
+		},
+		count: {
 			type: Number,
 			default: 0,
 		},
 	},
-	data() {
-		return {
-			purchaseGame: this.availableGame,
-		};
-	},
-
-	methods: {
-		openBox() {
-			this.purchaseGame -= 1;
-			this.$emit('update:availableGame', this.purchaseGame);
+	computed: {
+		status() {
+			return this.win ? 'win' : 'loss';
 		},
 	},
 };
@@ -35,55 +29,19 @@ export default {
 	width: 163px;
 	height: 168px;
 	background-image: url(../assets/img/box-bg.png);
-	background-size: cover;
-	display: flex;
-	align-items: flex-end;
-	justify-content: center;
-	padding-bottom: 11px;
+	background-size: 100% 100%;
+	position: relative;
 
 	&:not(.disabled) {
 		cursor: pointer;
 	}
-
-	&.active {
-		background: red;
-		border: 2px solid red;
-	}
-}
-.chest {
-	width: 125px;
-	height: 113px;
-	background-image: url(../assets/img/chest-bottom.png);
-	background-size: contain;
-	background-position: center bottom;
-	background-repeat: no-repeat;
-	position: relative;
-
-	&__bottom {
+	img {
 		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 125px;
-		height: 113px;
-		background-image: url(../assets/img/chest-bottom.png);
-		background-size: contain;
-		background-position: center bottom;
-		background-repeat: no-repeat;
-		position: relative;
-	}
-
-	&__top {
-		position: absolute;
-		bottom: 62px;
-		left: 0;
-		width: 100%;
-		height: 52px;
-		background-image: url(../assets/img/chest-top.png);
-		background-size: contain;
-		background-position: center top;
-		background-repeat: no-repeat;
-		transform-origin: 0 100%;
-		transform: rotateX(10deg);
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: 2px;
+		width: 87%;
+		height: 87%;
 	}
 }
 </style>

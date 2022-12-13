@@ -86,6 +86,7 @@ export default {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	padding: 111px 20px 10px;
+	position: relative;
 }
 .text-item {
 	color: #bab6b6;

@@ -32,6 +32,6 @@ export default {
 	line-height: 22px;
 	text-align: center;
 	padding: 168px 30px 0 20px;
-	margin-bottom: 51px;
+	margin-bottom: 56px;
 }
 </style>

@@ -15,10 +15,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.wrapper {
-	max-width: 1220px;
-	margin: 0 auto;
-	padding: 0 30px;
-}
-</style>
+<style lang="scss"></style>

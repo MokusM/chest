@@ -2,9 +2,15 @@ body {
 	font-family: 'a_BremenCaps';
 }
 
+.wrapper {
+	max-width: 1220px;
+	margin: 0 auto;
+	padding: 0 30px;
+}
+
 .btn {
-	width: 240px;
-	height: 75px;
+	width: 230px;
+	height: 65px;
 	display: block;
 	background-color: transparent;
 	background-image: url(@img/btn-buy.png);
@@ -20,7 +26,7 @@ body {
 	text-transform: uppercase;
 
 	&:disabled {
-		color: #52311b;
+		color: #383838;
 		background-image: url(@img/btn-play.png);
 		pointer-events: none;
 	}

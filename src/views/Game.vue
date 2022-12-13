@@ -1,22 +1,23 @@
 <template>
 	<div class="main">
-		<a id="header-logo-container" href="/" title="Íà ãëàâíóþ">
-			<img src="@img/logo.png" alt="" />
-		</a>
+		<div class="trol">
+			<img src="@img/trol.png" alt="" />
+		</div>
+		<div class="main__right"></div>
 		<div class="wrapper">
 			<page-header />
 			<div class="content">
 				<div class="content__chest">
 					<div class="box-list">
-						<div class="box-list__item" :class="{ disabled: game === 0 }" v-for="(item, index) in chestLenght" :key="`item+${index}`" @click="openChest(index)">
-							<box :class="{ active: currentChest === index }" />
+						<div class="box-list__item" :class="{ disabled: isAllow }" v-for="(item, index) in chestLenght" :key="`item+${index}`" @click="openChest(index)">
+							<box :win="isWin" :count="countImg" />
 						</div>
 					</div>
 					<div class="inf">Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"</div>
 				</div>
 				<div class="content__trol">
 					<prompt :text-index="promptText" />
-					<button :disabled="isAllow" @click="playGame" class="btn">ИГРАТЬ</button>
+					<button :disabled="isAllow" @click="openChest" class="btn">ИГРАТЬ</button>
 				</div>
 				<div class="content__purchase">
 					<purchase :availableGame.sync="game" />
@@ -50,12 +51,12 @@ export default {
 			showModal: false,
 			isLoading: false,
 			chestLenght: 9,
-			currentChest: undefined,
+			countImg: 0,
 		};
 	},
 	methods: {
-		playGame() {
-			this.currentChest = Math.floor(Math.random() * this.chestLenght) + 1;
+		openChest(index = null) {
+			if (index) Math.floor(Math.random() * this.chestLenght) + 1;
 
 			this.game--;
 			this.isLoading = true;
@@ -66,22 +67,15 @@ export default {
 					this.isLoading = false;
 					this.showModal = false;
 				}, 3000);
-			}, 1000);
-		},
+			}, 1100);
 
-		openChest(index) {
-			this.currentChest = index;
-
-			this.game--;
-			this.isLoading = true;
-
-			setTimeout(() => {
-				this.showModal = true;
-				setTimeout(() => {
-					this.isLoading = false;
-					this.showModal = false;
-				}, 3000);
-			}, 1000);
+			this.countImg = 0;
+			let timerId = setInterval(() => {
+				this.countImg++;
+				if (this.countImg >= 4) {
+					clearInterval(timerId);
+				}
+			}, 150);
 		},
 
 		closeModal() {
@@ -113,6 +107,23 @@ export default {
 	background-size: cover;
 	min-height: 100vh;
 	padding-top: 6.3%;
+
+	&__right {
+		position: absolute;
+		right: 0;
+		top: 0;
+		height: 100%;
+		width: 714px;
+		background-image: url(@img/main-right.png);
+		background-size: cover;
+		background-position: center left;
+		background-repeat: no-repeat;
+	}
+
+	.wrapper {
+		position: relative;
+		z-index: 2;
+	}
 }
 
 .inf {
@@ -143,8 +154,19 @@ export default {
 		}
 	}
 }
+
+.trol {
+	position: absolute;
+	right: 510px;
+	top: 122px;
+
+	img {
+		display: block;
+	}
+}
 .content {
 	display: flex;
+	padding-right: 10px;
 
 	&__chest {
 		flex: 1;
@@ -152,16 +174,19 @@ export default {
 
 	&__trol {
 		width: 340px;
-		padding-top: 24px;
+		padding-top: 48px;
 
 		.btn {
 			margin: 0 auto;
+			position: relative;
+			left: -9px;
 		}
 	}
 
 	&__purchase {
-		width: 276px;
+		width: 273px;
 		margin-left: 22px;
+		padding-top: 8px;
 	}
 }
 </style>
