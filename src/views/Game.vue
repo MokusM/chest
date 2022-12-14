@@ -1,5 +1,6 @@
 <template>
 	<div class="main">
+		<fire />
 		<div class="trol">
 			<img src="@img/trol.png" alt="" />
 		</div>
@@ -10,7 +11,6 @@
 				<div class="content__chest">
 					<div class="box-list">
 						<div class="box-list__item" :class="{ disabled: isAllow }" v-for="(item, index) in chestLenght" :key="`item+${index}`" @click="openChest(index)">
-							{{ currentChest === index }}
 							<box :win="isWin" :animation="currentChest === index" />
 						</div>
 					</div>
@@ -36,6 +36,7 @@ import Box from '../components/Box';
 import Purchase from '../components/Purchase';
 import Prompt from '../components/Prompt';
 import Popup from '../components/Popup';
+import Fire from '../components/Fire';
 
 export default {
 	name: 'Game',
@@ -45,6 +46,7 @@ export default {
 		Purchase,
 		Prompt,
 		Popup,
+		Fire,
 	},
 	data() {
 		return {

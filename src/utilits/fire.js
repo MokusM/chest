@@ -1,65 +1,51 @@
-var c = document.getElementById('c2');
-var $ = c.getContext('2d');
-var w = (c.width = window.innerWidth);
-var h = (c.height = window.innerHeight);
-var mx = w / 2,
-	my = h / 2;
-var t;
-var n = [];
-var m = Math.random;
-var f = Math.floor;
-A();
-function A() {
-	$.globalCompositeOperation = 'source-over';
-	$.fillStyle = 'rgba(11,2,2, 1)';
-	$.fillRect(0, 0, w, h);
-	$.globalCompositeOperation = 'lighter';
-	for (var i = 0; i < 50; i++) {
-		var p = {};
-		p.x = mx;
-		p.y = my;
-		p.vx = m() * 40 - 20;
-		p.vy = m() * 40 - 30;
-		p.s = m() * 100 + 10;
-		p.r = f(m() * 50 + 20);
-		p.g = m() * 5;
-		p.b = m() * 45;
-		p.dx = mx;
-		n.push(p);
-	}
-	i = n.length;
-	while (i--) {
-		p = n[i];
-		p.x += p.vx;
-		p.y += p.vy;
-		p.vy -= 0.2;
-		p.vx += (p.dx - p.x) / p.s / 2;
-		p.s -= 1.8;
-		if (p.s < 1) {
-			n.splice(i, 1);
-			continue;
-		}
-		$.beginPath();
-		var g1 = 'rgba(220,148,2,1)';
-		var g2 = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',0)';
-		var g = $.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s);
-		g.addColorStop(0, g1);
-		g.addColorStop(1, g2);
-		$.fillStyle = g;
-		$.arc(p.x, p.y, p.s, 0, 8, 0);
-		$.fill();
-	}
-	window.requestAnimationFrame(A);
-	t = 'FIRE!!! ◆◆◆ 1.5kb';
-	$.font = '6.5em Permanent Marker';
-	$.fillStyle = 'rgba(21, 15,245,1)';
-	$.fillText(t, 155, 650);
+export default {
+	var Part = function(){
+		this.reset();
+	  };
+	  
+	  Part.prototype.reset = function(){
+		this.startRadius = rand(1, 25);
+		this.radius = this.startRadius;
+		this.x = cw/2 + (rand(0, 6) - 3);
+		this.y = 250;      
+		this.vx = 0;
+		this.vy = 0;
+		this.hue = rand(globalTick - hueRange, globalTick + hueRange);
+		this.saturation = rand(50, 100);
+		this.lightness = rand(20, 70);
+		this.startAlpha = rand(1, 10) / 100;
+		this.alpha = this.startAlpha;
+		this.decayRate = .1;  
+		this.startLife = 7;
+		this.life = this.startLife;
+		this.lineWidth = rand(1, 3);
+	  }
+		  
+	  Part.prototype.update = function(){  
+		this.vx += (rand(0, 200) - 100) / 1500;
+		this.vy -= this.life/50;  
+		this.x += this.vx;
+		this.y += this.vy;  
+		this.alpha = this.startAlpha * (this.life / this.startLife);
+		this.radius = this.startRadius * (this.life / this.startLife);
+		this.life -= this.decayRate;  
+		if(
+		  this.x > cw + this.radius || 
+		  this.x < -this.radius ||
+		  this.y > ch + this.radius ||
+		  this.y < -this.radius ||
+		  this.life <= this.decayRate
+		){
+		  this.reset();  
+		}  
+	  };
+		
+	  Part.prototype.render = function(){
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+		ctx.fillStyle = ctx.strokeStyle = 'hsla('+this.hue+', '+this.saturation+'%, '+this.lightness+'%, '+this.alpha+')';
+		ctx.lineWidth = this.lineWidth;
+		ctx.fill();
+		ctx.stroke();
+	  };
 }
-window.addEventListener('resize', function () {
-	c.width = w = window.innerWidth;
-	c.height = h = window.innerHeight;
-});
-document.body.addEventListener('mousemove', function (e) {
-	mx = e.clientX;
-	my = e.clientY;
-});

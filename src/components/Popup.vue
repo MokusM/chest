@@ -33,7 +33,7 @@ export default {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.6);
+	background: rgba(0, 0, 0, 0.78);
 	z-index: 100;
 }
 
@@ -48,11 +48,13 @@ export default {
 	text-align: center;
 	width: fit-content;
 	height: fit-content;
-	max-width: 40em;
-	padding: 2rem;
+	max-width: 635px;
+	padding: 8rem 3rem;
 	border-radius: 1rem;
-	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-	background: #fff;
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.2);
+	//background: #fff;
+	background-image: url(@img/popup-bg.png);
+	background-size: 100% 100%;
 	z-index: 999;
 	transform: none;
 	&__text {
