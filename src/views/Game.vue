@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-		<fire />
+		<!-- <fire /> -->
 		<div class="trol">
 			<img src="@img/trol.png" alt="" />
 		</div>
@@ -37,6 +37,7 @@ import Purchase from '../components/Purchase';
 import Prompt from '../components/Prompt';
 import Popup from '../components/Popup';
 import Fire from '../components/Fire';
+import Blinking from '../components/Blinking.vue';
 
 export default {
 	name: 'Game',
@@ -47,6 +48,7 @@ export default {
 		Prompt,
 		Popup,
 		Fire,
+		Blinking,
 	},
 	data() {
 		return {
