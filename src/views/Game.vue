@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+	<div class="main" :class="{ play: gameInf.playAnimation }">
 		<fire />
 		<trol />
 		<div class="main__right"></div>
@@ -7,7 +7,7 @@
 			<page-header />
 			<div class="content">
 				<div class="content__chest">
-					<chest-list :game="gameInf" @open="openChest" :current="gameInf.currentChest" />
+					<chest-list :game="gameInf" @open="openChest" :current="gameInf.currentChest" :count="countImg" />
 					<div class="inf">Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"</div>
 				</div>
 				<div class="content__trol">
@@ -46,6 +46,7 @@ export default {
 	},
 	data() {
 		return {
+			countImg: 0,
 			gameInf: {
 				chestLenght: 9,
 				currentChest: -1,
@@ -58,7 +59,21 @@ export default {
 		};
 	},
 	methods: {
+		animChest() {
+			this.countImg = 0;
+			this.timerId = setInterval(() => {
+				this.countImg++;
+
+				if (this.countImg === 4) {
+					clearInterval(this.timerId);
+				}
+			}, 150);
+		},
+
 		openChest(index) {
+			this.animChest();
+			this.gameInf.playAnimation = true;
+
 			if (index || index === 0) {
 				this.gameInf.currentChest = index;
 			} else {
@@ -72,8 +87,8 @@ export default {
 				this.gameInf.showModal = true;
 				setTimeout(() => {
 					this.closeModal();
-				}, 3000);
-			}, 1100);
+				}, 2000);
+			}, 600);
 		},
 
 		closeModal() {
@@ -113,6 +128,10 @@ export default {
 	background-size: cover;
 	min-height: 100vh;
 	padding-top: 6.3%;
+
+	&.play {
+		pointer-events: none;
+	}
 
 	&__right {
 		position: absolute;

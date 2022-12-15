@@ -2,8 +2,7 @@
 	<div class="box-list">
 		<div class="box-list__item" v-for="(item, index) in game.chestLenght" :key="`item+${index}`">
 			<div class="box" :class="{ disabled: game.availableGame === 0, blick: game.choiseGame }" @click="openChest(index)">
-				{{ current }}
-				<img :src="require(`@img/chest-${status}-${current === index ? countImg : 0}.png`)" alt="" />
+				<img :src="require(`@img/chest-${status}-${current === index ? count : 0}.png`)" alt="" />
 			</div>
 		</div>
 	</div>
@@ -21,32 +20,24 @@ export default {
 			type: Number,
 			default: 0,
 		},
+		count: {
+			type: Number,
+			default: 0,
+		},
 	},
 	data() {
 		return {
-			countImg: 0,
 			timerId: null,
 		};
 	},
 	methods: {
-		animChest() {
-			this.countImg = 0;
-			this.timerId = setInterval(() => {
-				this.countImg++;
-				if (this.countImg === 4) {
-					clearInterval(this.timerId);
-					this.animCount = 0;
-				}
-			}, 150);
-		},
 		openChest(index) {
-			this.animChest();
 			this.$emit('open', index);
 		},
 	},
 	watch: {
 		current() {
-			this.animChest();
+			//this.animChest();
 		},
 	},
 	computed: {
