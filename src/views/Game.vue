@@ -7,7 +7,7 @@
 			<page-header />
 			<div class="content">
 				<div class="content__chest">
-					<chest-list :game="gameInf" @open="openChest" />
+					<chest-list :game="gameInf" @open="openChest" :current="gameInf.currentChest" />
 					<div class="inf">Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"</div>
 				</div>
 				<div class="content__trol">

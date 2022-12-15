@@ -1,11 +1,9 @@
 <template>
-	<div class="">
-		{{ game.currentChest }}
-		<div class="box-list">
-			<div class="box-list__item" v-for="(item, index) in game.chestLenght" :key="`item+${index}`">
-				<div class="box" :class="{ disabled: game.availableGame === 0, blick: game.choiseGame }" @click="openChest(index)">
-					<img :src="require(`@img/chest-${status}-${game.currentChest === index ? countImg : 0}.png`)" alt="" />
-				</div>
+	<div class="box-list">
+		<div class="box-list__item" v-for="(item, index) in game.chestLenght" :key="`item+${index}`">
+			<div class="box" :class="{ disabled: game.availableGame === 0, blick: game.choiseGame }" @click="openChest(index)">
+				{{ current }}
+				<img :src="require(`@img/chest-${status}-${current === index ? countImg : 0}.png`)" alt="" />
 			</div>
 		</div>
 	</div>
@@ -19,6 +17,10 @@ export default {
 			type: Object,
 			default: () => ({}),
 		},
+		current: {
+			type: Number,
+			default: 0,
+		},
 	},
 	data() {
 		return {
@@ -31,25 +33,20 @@ export default {
 			this.countImg = 0;
 			this.timerId = setInterval(() => {
 				this.countImg++;
-				if (this.countImg >= 4) {
+				if (this.countImg === 4) {
 					clearInterval(this.timerId);
 					this.animCount = 0;
 				}
 			}, 150);
 		},
 		openChest(index) {
-			clearInterval(this.timerId);
+			this.animChest();
 			this.$emit('open', index);
 		},
 	},
 	watch: {
-		game: {
-			handler() {
-				if (this.game.currentChest >= 0) {
-					this.animChest();
-				}
-			},
-			deep: true,
+		current() {
+			this.animChest();
 		},
 	},
 	computed: {
