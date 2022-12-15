@@ -69,6 +69,7 @@ export default {
 			this.purchaseGame += this.game;
 			this.game = 0;
 			this.$emit('update:availableGame', this.purchaseGame);
+			this.$emit('buy');
 		},
 	},
 
@@ -87,6 +88,7 @@ export default {
 	background-size: 100% 100%;
 	padding: 111px 20px 10px;
 	position: relative;
+	box-shadow: -2px 3px 7px 1px rgba(31, 32, 32, 0.4);
 }
 .text-item {
 	color: #bab6b6;

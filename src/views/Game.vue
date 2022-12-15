@@ -1,195 +1,200 @@
 <template>
-	<div class="main">
-		<!-- <fire /> -->
-		<div class="trol">
-			<img src="@img/trol.png" alt="" />
-		</div>
-		<div class="main__right"></div>
-		<div class="wrapper">
-			<page-header />
-			<div class="content">
-				<div class="content__chest">
-					<div class="box-list">
-						<div class="box-list__item" :class="{ disabled: isAllow }" v-for="(item, index) in chestLenght" :key="`item+${index}`" @click="openChest(index)">
-							<box :win="isWin" :animation="currentChest === index" />
-						</div>
-					</div>
-					<div class="inf">Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"</div>
-				</div>
-				<div class="content__trol">
-					<prompt :text-index="promptText" />
-					<button :disabled="isAllow" @click="openChest()" class="btn">ИГРАТЬ</button>
-				</div>
-				<div class="content__purchase">
-					<purchase :availableGame.sync="game" />
-				</div>
-			</div>
-		</div>
-		<transition name="fade">
-			<popup v-if="showModal" @close="closeModal" :win="isWin" />
-		</transition>
-	</div>
+  <div class="main">
+    <!-- <fire /> -->
+    <trol />
+    <div class="main__right"></div>
+    <div class="wrapper">
+      <page-header />
+      <div class="content">
+        <div class="content__chest">
+          <div class="box-list">
+            <div
+              class="box-list__item"
+              :class="{ disabled: isAllow, blick: choiseGame }"
+              v-for="(item, index) in chestLenght"
+              :key="`item+${index}`"
+              @click="openChest(index)"
+            >
+              <box :win="isWin" :animation="currentChest === index" />
+            </div>
+          </div>
+          <div class="inf">
+            Для игры Вам необходимо купить попытки, а затем нажать кнопку "ИГРАТЬ"
+          </div>
+        </div>
+        <div class="content__trol">
+          <prompt :text-index="promptText" />
+          <button :disabled="isAllow" @click="openChest()" class="btn">ИГРАТЬ</button>
+        </div>
+        <div class="content__purchase">
+          <purchase :availableGame.sync="game" @buy="buyGame" />
+        </div>
+      </div>
+    </div>
+    <transition name="fade">
+      <popup v-if="showModal" @close="closeModal" :win="isWin" />
+    </transition>
+  </div>
 </template>
 <script>
-import PageHeader from '../components/PageHeader';
-import Box from '../components/Box';
-import Purchase from '../components/Purchase';
-import Prompt from '../components/Prompt';
-import Popup from '../components/Popup';
-import Fire from '../components/Fire';
-import Blinking from '../components/Blinking.vue';
+import PageHeader from "../components/PageHeader";
+import Box from "../components/Box";
+import Purchase from "../components/Purchase";
+import Prompt from "../components/Prompt";
+import Popup from "../components/Popup";
+import Fire from "../components/Fire";
+import Trol from "../components/Trol";
 
 export default {
-	name: 'Game',
-	components: {
-		PageHeader,
-		Box,
-		Purchase,
-		Prompt,
-		Popup,
-		Fire,
-		Blinking,
-	},
-	data() {
-		return {
-			game: 0,
-			showModal: false,
-			isLoading: false,
-			chestLenght: 9,
-			currentChest: -1,
-		};
-	},
-	methods: {
-		openChest(index) {
-			if (index) {
-				this.currentChest = index;
-			} else {
-				this.currentChest = Math.floor(Math.random() * this.chestLenght) + 1;
-				console.log(';fff');
-			}
+  name: "Game",
+  components: {
+    PageHeader,
+    Box,
+    Purchase,
+    Prompt,
+    Popup,
+    Fire,
+    Trol,
+  },
+  data() {
+    return {
+      game: 0,
+      showModal: false,
+      isLoading: false,
+      chestLenght: 9,
+      currentChest: -1,
+      count: 1,
+      choiseGame: false,
+    };
+  },
+  methods: {
+    openChest(index) {
+      if (index) {
+        this.currentChest = index;
+      } else {
+        this.currentChest = Math.floor(Math.random() * this.chestLenght) + 1;
+      }
 
-			this.game--;
-			this.isLoading = true;
+      this.game--;
+      this.isLoading = true;
 
-			setTimeout(() => {
-				this.showModal = true;
-				setTimeout(() => {
-					this.isLoading = false;
-					this.showModal = false;
-				}, 3000);
-			}, 1100);
-		},
+      setTimeout(() => {
+        this.showModal = true;
+        setTimeout(() => {
+          this.isLoading = false;
+          this.showModal = false;
+        }, 3000);
+      }, 1100);
+    },
 
-		closeModal() {
-			this.showModal = false;
-			this.isLoading = false;
-		},
-	},
-	computed: {
-		isAllow() {
-			return this.game === 0 || this.isLoading;
-		},
-		isWin() {
-			return this.game % 2 === 0;
-		},
-		promptText() {
-			if (this.game > 0) {
-				return 1;
-			} else {
-				return 0;
-			}
-		},
-	},
+    closeModal() {
+      this.showModal = false;
+      this.isLoading = false;
+    },
+
+    buyGame() {
+      this.choiseGame = true;
+      setTimeout(() => {
+        this.choiseGame = false;
+      }, 4000);
+    },
+  },
+  computed: {
+    isAllow() {
+      return this.game === 0 || this.isLoading;
+    },
+    isWin() {
+      return this.game % 2 === 0;
+    },
+    promptText() {
+      if (this.game > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 .main {
-	background-color: #000;
-	background-image: url(@img/main-bg.jpg);
-	background-size: cover;
-	min-height: 100vh;
-	padding-top: 6.3%;
+  background-color: #000;
+  background-image: url(@img/main-bg.jpg);
+  background-size: cover;
+  min-height: 100vh;
+  padding-top: 6.3%;
 
-	&__right {
-		position: absolute;
-		right: 0;
-		top: 0;
-		height: 100%;
-		width: 714px;
-		background-image: url(@img/main-right.png);
-		background-size: cover;
-		background-position: center left;
-		background-repeat: no-repeat;
-	}
+  &__right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 714px;
+    background-image: url(@img/main-right.png);
+    background-size: cover;
+    background-position: center left;
+    background-repeat: no-repeat;
+  }
 
-	.wrapper {
-		position: relative;
-		z-index: 2;
-	}
+  .wrapper {
+    position: relative;
+    z-index: 2;
+  }
 }
 
 .inf {
-	text-shadow: 0 0 10px #1f2020;
-	color: #ffffff;
-	font-family: 'PT Sans', sans-serif;
-	font-size: 16px;
-	font-weight: 400;
-	font-style: normal;
-	letter-spacing: normal;
-	line-height: 20px;
-	text-align: center;
-	max-width: 307px;
-	margin: 0 auto;
+  text-shadow: 0 0 10px #1f2020;
+  color: #ffffff;
+  font-family: "PT Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: normal;
+  line-height: 20px;
+  text-align: center;
+  max-width: 307px;
+  margin: 0 auto;
 }
 
 .box-list {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 0 -4px 2px 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -4px 2px 0;
 
-	&__item {
-		width: 33.3%;
-		padding: 4px 4px 2px;
+  &__item {
+    width: 33.3%;
+    padding: 4px 4px 2px;
 
-		&.disabled {
-			pointer-events: none;
-		}
-	}
+    &.disabled {
+      pointer-events: none;
+    }
+  }
 }
 
-.trol {
-	position: absolute;
-	right: 510px;
-	top: 122px;
-
-	img {
-		display: block;
-	}
-}
 .content {
-	display: flex;
-	padding-right: 10px;
+  display: flex;
+  padding-right: 10px;
 
-	&__chest {
-		flex: 1;
-	}
+  &__chest {
+    flex: 1;
+  }
 
-	&__trol {
-		width: 340px;
-		padding-top: 48px;
+  &__trol {
+    width: 340px;
+    padding-top: 48px;
 
-		.btn {
-			margin: 0 auto;
-			position: relative;
-			left: -9px;
-		}
-	}
+    .btn {
+      margin: 0 auto;
+      position: relative;
+      left: -9px;
+    }
+  }
 
-	&__purchase {
-		width: 273px;
-		margin-left: 22px;
-		padding-top: 8px;
-	}
+  &__purchase {
+    width: 273px;
+    margin-left: 22px;
+    padding-top: 8px;
+  }
 }
 </style>
