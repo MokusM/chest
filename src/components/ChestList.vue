@@ -1,5 +1,6 @@
 <template>
 	<div class="">
+		{{ game.currentChest }}
 		<div class="box-list">
 			<div class="box-list__item" v-for="(item, index) in game.chestLenght" :key="`item+${index}`">
 				<div class="box" :class="{ disabled: game.availableGame === 0, blick: game.choiseGame }" @click="openChest(index)">
@@ -23,7 +24,6 @@ export default {
 		return {
 			countImg: 0,
 			timerId: null,
-			currentItem: this.game.currentChest,
 		};
 	},
 	methods: {
@@ -45,7 +45,6 @@ export default {
 	watch: {
 		game: {
 			handler() {
-				clearInterval(this.timerId);
 				if (this.game.currentChest >= 0) {
 					this.animChest();
 				}
@@ -83,6 +82,11 @@ export default {
 	}
 	&:not(.disabled) {
 		cursor: pointer;
+	}
+
+	&:hover {
+		transition: all 0.3s;
+		filter: drop-shadow(0 0 0.75rem rgba(227, 227, 112, 1));
 	}
 	img {
 		position: absolute;

@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<transition name="fade">
-			<popup v-if="showModal" @close="closeModal" :win="gameInf.statusGame" />
+			<popup v-if="gameInf.showModal" @close="closeModal" :win="gameInf.statusGame" />
 		</transition>
 	</div>
 </template>
@@ -46,15 +46,14 @@ export default {
 	},
 	data() {
 		return {
-			showModal: false,
-			isLoading: false,
-
 			gameInf: {
 				chestLenght: 9,
 				currentChest: -1,
 				availableGame: 0,
 				choiseGame: false,
 				statusGame: false,
+				showModal: false,
+				playAnimation: false,
 			},
 		};
 	},
@@ -67,10 +66,10 @@ export default {
 			}
 			this.gameInf.statusGame = this.gameInf.availableGame % 2 === 0;
 			this.gameInf.availableGame--;
-			this.isLoading = true;
+			this.gameInf.playAnimation = true;
 
 			setTimeout(() => {
-				this.showModal = true;
+				this.gameInf.showModal = true;
 				setTimeout(() => {
 					this.closeModal();
 				}, 3000);
@@ -78,8 +77,8 @@ export default {
 		},
 
 		closeModal() {
-			this.showModal = false;
-			this.isLoading = false;
+			this.gameInf.showModal = false;
+			this.gameInf.playAnimation = false;
 			this.gameInf.currentChest = -1;
 		},
 
@@ -94,7 +93,7 @@ export default {
 	},
 	computed: {
 		isAllow() {
-			return this.gameInf.availableGame === 0 || this.isLoading;
+			return this.gameInf.availableGame === 0 || this.gameInf.playAnimation;
 		},
 		promptText() {
 			if (this.gameInf.availableGame > 0) {
