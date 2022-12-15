@@ -6,7 +6,7 @@
 			<li class="purchase-list__item">
 				<div class="text-item">Игр:</div>
 				<div class="purchase-list__cell">
-					<div class="text-value">{{ availableGame }}</div>
+					<div class="text-value">{{ game.availableGame }}</div>
 				</div>
 			</li>
 			<li class="purchase-list__item purchase-list__item_title">
@@ -17,13 +17,17 @@
 				<div class="text-item">Игр:</div>
 				<div class="purchase-list__cell">
 					<div class="purchase-list__row">
-						<div class="text-value">{{ game }}</div>
+						<div class="text-value">{{ counterGame }}</div>
 						<div class="counter">
 							<button class="counter__btn" @click="moreGame">
-								<img src="@img/arrow.svg" alt="" />
+								<svg width="11px" height="6px" viewBox="0 0 11 6">
+									<path fill-rule="evenodd" d="M10.022,5.684 L5.500,1.697 L0.977,5.684 L0.008,4.829 L5.500,-0.011 L10.991,4.829 L10.022,5.684 Z" />
+								</svg>
 							</button>
-							<button class="counter__btn" :class="{ disabled: game === 0 }" @click="lessGame">
-								<img src="@img/arrow.svg" alt="" />
+							<button class="counter__btn" :class="{ disabled: counterGame === 0 }" @click="lessGame">
+								<svg width="11px" height="6px" viewBox="0 0 11 6">
+									<path fill-rule="evenodd" d="M10.022,5.684 L5.500,1.697 L0.977,5.684 L0.008,4.829 L5.500,-0.011 L10.991,4.829 L10.022,5.684 Z" />
+								</svg>
 							</button>
 						</div>
 					</div>
@@ -39,43 +43,40 @@
 				</div>
 			</li>
 		</ul>
-		<button @click="buyGame" :disabled="game === 0" class="btn">Купить</button>
+		<button @click="buyGame" :disabled="counterGame === 0" class="btn">Купить</button>
 	</div>
 </template>
 <script>
 export default {
 	name: 'Purchase',
 	props: {
-		availableGame: {
-			type: Number,
-			default: 0,
+		game: {
+			type: Object,
+			default: () => ({}),
 		},
 	},
 	data() {
 		return {
-			purchaseGame: this.availableGame,
-			game: 0,
+			counterGame: 0,
 		};
 	},
 
 	methods: {
 		moreGame() {
-			this.game++;
+			this.counterGame++;
 		},
 		lessGame() {
-			this.game--;
+			this.counterGame--;
 		},
 		buyGame() {
-			this.purchaseGame += this.game;
-			this.game = 0;
-			this.$emit('update:availableGame', this.purchaseGame);
-			this.$emit('buy');
+			this.$emit('buy', this.counterGame);
+			this.counterGame = 0;
 		},
 	},
 
 	computed: {
 		price() {
-			return this.game * 5;
+			return this.counterGame * 5;
 		},
 	},
 };
@@ -156,6 +157,11 @@ export default {
 		border: none;
 		background-color: transparent;
 		cursor: pointer;
+		height: 10px;
+		fill: #fff;
+		svg {
+			display: block;
+		}
 		&:hover {
 			fill: #fec602;
 		}
@@ -166,7 +172,7 @@ export default {
 		}
 
 		&:last-child {
-			img {
+			svg {
 				transform: scale(1, -1);
 			}
 		}

@@ -1,5 +1,9 @@
+html {
+	overflow: hidden;
+}
 body {
 	font-family: 'a_BremenCaps';
+	overflow: hidden;
 }
 
 .wrapper {
@@ -25,11 +29,16 @@ body {
 	text-align: center;
 	text-transform: uppercase;
 	box-shadow: -2px 3px 7px 1px rgba(31, 32, 32, 0.4);
+	transition: all 0.3s;
 
 	&:disabled {
 		color: #383838;
 		background-image: url(@img/btn-play.png);
 		pointer-events: none;
+	}
+
+	&:hover {
+		box-shadow: -2px 3px 7px 1px rgba(227, 227, 112, 0.4);
 	}
 }
 
