@@ -24,12 +24,10 @@ export default {
 			countImg: 0,
 			timerId: null,
 			currentItem: this.game.currentChest,
-			animCount: 0,
 		};
 	},
 	methods: {
 		animChest() {
-			this.animCount++;
 			this.countImg = 0;
 			this.timerId = setInterval(() => {
 				this.countImg++;
@@ -48,7 +46,7 @@ export default {
 		game: {
 			handler() {
 				clearInterval(this.timerId);
-				if (this.game.currentChest >= 0 && this.animCount === 0) {
+				if (this.game.currentChest >= 0) {
 					this.animChest();
 				}
 			},
