@@ -1,18 +1,16 @@
 <template>
-	<div id="app">
-		<Game />
-	</div>
+    <div id="app">
+        <Game/>
+    </div>
 </template>
 
 <script>
 import Game from './views/Game.vue';
 
 export default {
-	name: 'App',
-	components: {
-		Game,
-	},
+    name: 'App',
+    components: {
+        Game,
+    },
 };
 </script>
-
-<style lang="scss"></style>
